@@ -1,0 +1,2 @@
+npm config set proxy http://s17072:gaulesa55@proxy2:3128
+npm config set https-proxy http://s17072:gaulesa55@proxy2:3128
