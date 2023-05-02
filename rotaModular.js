@@ -4,6 +4,8 @@ const cursoRouter = require('./rotas/cursoRoutes');
 const loginRota = require('./rotas/loginRota');
 const bodyParser = require('body-parser');
 
+
+
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

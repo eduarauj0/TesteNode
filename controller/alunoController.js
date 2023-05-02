@@ -2,8 +2,17 @@ const bd = require('./../bancoDados/bd.js');
 
 
 exports.getAll = (req, res) => {
+	console.log(req);
+	res.status(200).json({
+		status: 'success',
+		data: 'teste'
+	});
+};
+
+
+exports.getAll = (req, res) => {
 	console.log('chamei');
-	selectAtletas2(res);
+	selectAtletas(res);
 	//res.status(200).json({
 	//	status: 'success',
 	//	data: teste
@@ -28,16 +37,8 @@ exports.getAll = (req, res) => {
 };
 
 exports.getOne = (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        data: {
-            aluno: {
-                id: req.params.id,
-                nome: 'Fulano Silva',
-                idade: 27
-            }
-        }
-    });
+	//console.log(req.params.id);
+	selectAtletasId(res,req.params.id);
 };
 
 exports.createOne = (req, res) => {
@@ -74,32 +75,20 @@ exports.deleteOne = (req, res) => {
     });
 };
 
-
-
-async function selectAtletas() {
-    const client = await bd.connect();
-    const sql = 'select * from inscricoes.atleta a where a.cpf = $1';
-	const res = await client.query(sql, ['27969938841'])
-	console.log(res.rows[0].nome);
-    return res.rows;
-}
-
-async function selectAtletas2(res) {
+async function selectAtletas(res) {
 	const client = await bd.connect();
-	client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2',['11111111111',1]).then(retorno => {
+		client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2',['11111111111',17]).then(retorno => {
 		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.status(200).json(retorno.rows)
-		//console.log(retorno.rows);
-	}).finally(() => client.end())
+		//console.log('entrei');
+	}).finally(() => client.release())
 }
 
-async function selectAtletas3(res) {
+async function selectAtletasId(res,cpf) {
 	const client = await bd.connect();
-	client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2' ,['27969938841',1], (error, results) => {
-    if (error) {
-      throw error
-    }
-	res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).json(results.rows)
-  })
+		client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2',[cpf,1]).then(retorno => {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.status(200).json(retorno.rows)
+		console.log('entrei'+cpf);
+	}).finally(() => client.release())
 }
