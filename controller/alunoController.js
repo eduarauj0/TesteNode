@@ -1,39 +1,18 @@
 const bd = require('./../bancoDados/bd.js');
 
 
-exports.getAll = (req, res) => {
-	console.log(req);
-	res.status(200).json({
-		status: 'success',
-		data: 'teste'
-	});
-};
-
-
-exports.getAll = (req, res) => {
-	console.log('chamei');
-	selectAtletas(res);
+//exports.getAll = (req, res) => {
+	//console.log(req);
 	//res.status(200).json({
 	//	status: 'success',
-	//	data: teste
+	//	data: 'teste'
 	//});
-    //res.status(200).json({
-    //    status: 'success',
-    //    data: {
-    //        alunos: [
-    //            {
-    //                id: 1,
-    //                nome: 'Fulano Silva',
-    //                idade: 27
-    //            },
-     //           {
-     //               id: 2,
-    //                nome: 'Ciclano Almeida',
-    //                idade: 32
-    //            }
-    //        ]
-    //    }
-    //});
+//};
+
+exports.getAll = (req, res) => {
+	
+	//console.log('chamei');
+	selectAtletas(res);
 };
 
 exports.getOne = (req, res) => {

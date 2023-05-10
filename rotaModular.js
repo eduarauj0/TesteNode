@@ -3,7 +3,8 @@ const alunoRouter = require('./rotas/alunoRoutes');
 const cursoRouter = require('./rotas/cursoRoutes');
 const loginRota = require('./rotas/loginRota');
 const bodyParser = require('body-parser');
-
+const jwt = require('jsonwebtoken');
+const auth = require('./auth/autenticacao.js');
 
 
 const app = express();
@@ -18,7 +19,8 @@ app.get('/index.htm', function (req, res) {
    res.sendFile( __dirname + "/" + "public/html/index.htm" );
 })
 
-app.get('/hello', function (req, res) {
+app.get('/hello',auth.verifyJWT, function (req, res) {
+	console.log("passei");
     res.header("Access-Control-Allow-Origin", "*");
     res.send('Hello World');
 })
@@ -32,11 +34,14 @@ app.all('*',function (req,res,next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
 
-  console.log(req.header("Authorization"));
+  console.log("inicio");
   next();
-
-
 });
+
+app.post('/logout', function(req, res) {
+    res.json({ auth: false, token: null });
+});
+
 
 app.listen(8081, () => {
     console.log('our app is running locally...');

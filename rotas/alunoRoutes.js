@@ -1,11 +1,12 @@
 const express = require('express');
 const alunoController = require('./../controller/alunoController');
+const auth = require('./../auth/autenticacao.js');
 
 const router = express.Router();
 
 router
     .route('/api/aluno')
-    .get(alunoController.getAll)
+    .get(auth.verifyJWT,alunoController.getAll)
     .post(alunoController.createOne);
 
 router
