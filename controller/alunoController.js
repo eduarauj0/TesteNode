@@ -10,7 +10,6 @@ const bd = require('./../bancoDados/bd.js');
 //};
 
 exports.getAll = (req, res) => {
-	
 	//console.log('chamei');
 	selectAtletas(res);
 };

@@ -11,6 +11,28 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
+	//console.log('filtro');
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+	//res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+	
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Headers');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 
 app.use(alunoRouter);
 app.use(cursoRouter);
@@ -21,23 +43,8 @@ app.get('/index.htm', function (req, res) {
 })
 
 app.get('/hello',auth.verifyJWT, function (req, res) {
-	console.log("passei");
-    res.header("Access-Control-Allow-Origin", "*");
     res.send('Hello World');
 })
-
-app.all('*',function (req,res,next) {
-  console.log(req.header("Authorization"));
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization ,Accept');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials',true);
-  res.setHeader('Access-Control-Expose-Headers','Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
-
-  console.log("inicio");
-  next();
-});
 
 app.post('/logout', function(req, res) {
     res.json({ auth: false, token: null });
