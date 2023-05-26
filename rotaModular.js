@@ -5,6 +5,7 @@ const loginRota = require('./rotas/loginRota');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const auth = require('./auth/autenticacao.js');
+var fs = require('fs');
 
 
 const app = express();
@@ -44,7 +45,22 @@ app.get('/index.htm', function (req, res) {
 
 app.get('/hello',auth.verifyJWT, function (req, res) {
     res.send('Hello World');
-})
+});
+
+
+app.get('/imagem', function (req, res) {
+    fs.readFile('/node/TesteNode/google.png', function (err, content) {
+        if (err) {
+            res.writeHead(400, {'Content-type':'text/html'})
+            console.log(err);
+            res.end("No such image");    
+        } else {
+            //specify the content type in the response will be an image
+            res.writeHead(200,{'Content-type':'image/jpg'});
+            res.end(content);
+        }
+    });
+});
 
 app.post('/logout', function(req, res) {
     res.json({ auth: false, token: null });

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 exports.validar = (req, res) => {
 	console.log('login');
-	console.log(req.body);
+	//console.log(req.body);
 	 //esse teste abaixo deve ser feito no seu banco de dados
 	 
     if(req.body.login === 'eduardo' && req.body.senha === '123'){

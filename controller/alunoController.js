@@ -1,4 +1,5 @@
 const bd = require('./../bancoDados/bd.js');
+var fs = require('fs'), request = require('request');
 
 
 //exports.getAll = (req, res) => {
@@ -9,8 +10,25 @@ const bd = require('./../bancoDados/bd.js');
 	//});
 //};
 
+exports.getImage = (req, res) => {
+	fs.readFile('/node/TesteNode/google.png', function (err, content) {
+        if (err) {
+            res.writeHead(400, {'Content-type':'text/html'})
+            console.log(err);
+            res.end("No such image");    
+        } else {
+            //specify the content type in the response will be an image
+            res.writeHead(200,{'Content-type':'image/jpg'});
+            res.end(content);
+        }
+    });
+};
+
 exports.getAll = (req, res) => {
 	//console.log('chamei');
+	//baixarImagemParaDentroDoProjeto('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
+		//console.log('done');
+	//});
 	selectAtletas(res);
 };
 
@@ -56,7 +74,6 @@ exports.deleteOne = (req, res) => {
 async function selectAtletas(res) {
 	const client = await bd.connect();
 		client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2',['11111111111',17]).then(retorno => {
-		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.status(200).json(retorno.rows)
 		//console.log('entrei');
 	}).finally(() => client.release())
@@ -65,8 +82,16 @@ async function selectAtletas(res) {
 async function selectAtletasId(res,cpf) {
 	const client = await bd.connect();
 		client.query('select * from inscricoes.atleta a where a.cpf = $1 LIMIT $2',[cpf,1]).then(retorno => {
-		res.setHeader('Access-Control-Allow-Origin', '*');
 		res.status(200).json(retorno.rows)
 		console.log('entrei'+cpf);
 	}).finally(() => client.release())
 }
+
+var baixarImagemParaDentroDoProjeto = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
