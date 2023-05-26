@@ -66,7 +66,6 @@ app.post('/logout', function(req, res) {
     res.json({ auth: false, token: null });
 });
 
-
 app.listen(8081, () => {
     console.log('our app is running locally...');
 }); 

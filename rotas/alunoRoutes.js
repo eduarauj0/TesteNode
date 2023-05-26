@@ -16,5 +16,4 @@ router.route('/api/aluno/:id')
 router.route('/api/aluno/imagem')
 		.get(alunoController.getImage)
 
-
 module.exports = router;
