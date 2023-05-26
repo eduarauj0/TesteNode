@@ -9,7 +9,7 @@ var fs = require('fs'), request = require('request');
 	//	data: 'teste'
 	//});
 //};
-
+ 
 exports.getImage = (req, res) => {
 	fs.readFile('/node/TesteNode/google.png', function (err, content) {
         if (err) {
